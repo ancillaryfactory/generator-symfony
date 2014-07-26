@@ -1,3 +1,4 @@
 "require": {
         "kunstmaan/live-reload-bundle": "dev-master",
         "evolution7/grunt-usemin-bundle": "0.3.*",
+        "stof/doctrine-extensions-bundle": "~1.1@dev",

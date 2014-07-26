@@ -184,7 +184,7 @@ AppGenerator.prototype.askFeatures = function askFeatures() {
   var cb = this.async();
 
   if (!this.options['skip-welcome-message']) {
-    console.log('Out of the box I include Symfony, HTML5 Boilerplate, jQuery and Sass.');
+    console.log('Out of the box I include Symfony, Bootstrap 3, and jQuery.');
   }
 
   var prompts = [{
@@ -330,6 +330,15 @@ AppGenerator.prototype.updateConfigDev = function updateConfigDev() {
   var extraContents = this.read("symfony/config_dev.yml");
   configDevContents += extraContents;
   this.write(configDevPath, configDevContents);
+}
+
+AppGenerator.prototype.updateDoctrineExtensions = function updateDoctrineExtensions() {
+  console.log('Adding support for Doctrine Extensions');
+  var configPath = "app/config/config.yml";
+  var configContents = this.readFileAsString(configPath);
+  var extraContents = this.read("symfony/config.yml");
+  configContents += extraContents;
+  this.write(configPath, configContents);
 }
 
 AppGenerator.prototype.configureVagrant = function configureVagrant() {
