@@ -34,7 +34,7 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
   this.symfonyStandardDistribution = {
     username: 'symfony',
     repository: 'symfony-standard',
-    commit: '2.3'
+    commit: '2.5'
   };
 
 };
@@ -283,9 +283,15 @@ AppGenerator.prototype.symfonyCustom = function symfonyCustom() {
   this.copy('symfony/layout.html.twig', 'src/Acme/DemoBundle/Resources/views/layout.html.twig');
 };
 
-AppGenerator.prototype.gruntfile = function gruntfile() {
-  this.template('_Gruntfile.js', 'Gruntfile.js');
-};
+if ( this.taskRunner === 'grunt') {
+  AppGenerator.prototype.gruntfile = function gruntfile() {
+    this.template('_Gruntfile.js', 'Gruntfile.js');
+  };
+} else {
+  AppGenerator.prototype.gulpfile = function gulpfile() {
+    this.template('_gulpfile.js', 'gulpfile.js');
+  };
+}
 
 AppGenerator.prototype.packageJSON = function packageJSON() {
   this.template('_package.json', 'package.json');
@@ -382,6 +388,10 @@ AppGenerator.prototype.configureVagrant = function configureVagrant() {
     });
   }
 };
+
+// AppGenerator.prototype.createBundle = function createBundle() {
+//   spawn('php', ['app/console', 'generate:bundle']);
+// }
 
 // AppGenerator.prototype.inuit = function inuit() {
 //   if (this.inuit) {
