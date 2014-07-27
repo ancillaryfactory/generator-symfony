@@ -82,7 +82,7 @@ AppGenerator.prototype.askSymfonyStandard = function askSymfonyStandard() {
   var prompts = [{
     type: 'confirm',
     name: 'symfonyStandard',
-    message: 'Would you like to use the Symfony "Standard Edition" distribution',
+    message: 'Would you like to use the Symfony ' + this.symfonyStandardDistribution.commit + ' "Standard Edition" distribution',
     default: true
   }];
 
@@ -182,28 +182,28 @@ AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
 }
 
 
-AppGenerator.prototype.askCssExtension = function askCssExtension() {
-  var cb = this.async();
+// AppGenerator.prototype.askCssExtension = function askCssExtension() {
+//   var cb = this.async();
 
-  var prompts = [{
-    type: 'list',
-    name: 'cssExtension',
-    message: 'Which CSS extension tool would you like to use?',
-    default: 'sass',
-    choices: ['sass', 'compass']
-  }];
+//   var prompts = [{
+//     type: 'list',
+//     name: 'cssExtension',
+//     message: 'Which CSS extension tool would you like to use?',
+//     default: 'sass',
+//     choices: ['sass', 'compass']
+//   }];
 
-  this.prompt(prompts, function (answers) {
+//   this.prompt(prompts, function (answers) {
 
-    if (answers.cssExtension) {
-      this.cssExtension = answers.cssExtension;
-    } else {
-      this.cssExtension = 'sass';
-    }
+//     if (answers.cssExtension) {
+//       this.cssExtension = answers.cssExtension;
+//     } else {
+//       this.cssExtension = 'sass';
+//     }
 
-    cb();
-  }.bind(this));
-};
+//     cb();
+//   }.bind(this));
+// };
 
 AppGenerator.prototype.askFeatures = function askFeatures() {
   var cb = this.async();
@@ -372,6 +372,14 @@ AppGenerator.prototype.updateDoctrineExtensions = function updateDoctrineExtensi
   this.write(configPath, configContents);
 }
 
+AppGenerator.prototype.createBundle = function createBundle() {
+  console.log('Creating new bundle');
+  var cb = this.async();
+  spawn('php', ['app/console', 'generate:bundle']).on('exit', function() {
+    cb();
+  });
+}
+
 AppGenerator.prototype.configureVagrant = function configureVagrant() {
   if (this.vagrant) {
     this.copy('vagrant/Vagrantfile', 'Vagrantfile');
@@ -388,10 +396,6 @@ AppGenerator.prototype.configureVagrant = function configureVagrant() {
     });
   }
 };
-
-// AppGenerator.prototype.createBundle = function createBundle() {
-//   spawn('php', ['app/console', 'generate:bundle']);
-// }
 
 // AppGenerator.prototype.inuit = function inuit() {
 //   if (this.inuit) {
