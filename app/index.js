@@ -20,9 +20,9 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         var composerReqs = ['evolution7/grunt-usemin-bundle="0.3.*"'];
         var composerDevReqs = ['kunstmaan/live-reload-bundle=dev-master'];
         if (this.globalComposer) {
-          var comspawn = spawn('composer', ['install']);
+          var comspawn = this.spawnCommand('composer', ['update']);
         } else {
-          spawn('php', ['composer.phar', 'install']);
+          var comspawn = this.spawnCommand('php', ['composer.phar', 'update']);
         }
       }.bind(this)
     });
@@ -183,7 +183,7 @@ AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
 
 AppGenerator.prototype.database = function database(){
   var cb = this.async();
-
+  this.log('\nDatabase setup');
   var prompts = [
     {
       type: 'input',
@@ -256,7 +256,7 @@ AppGenerator.prototype.askFeatures = function askFeatures() {
   var cb = this.async();
 
   if (!this.options['skip-welcome-message']) {
-    console.log('Out of the box I include Symfony, Bootstrap 3, and jQuery.');
+    this.log('\nOut of the box I include Symfony, Bootstrap 3, and jQuery.');
   }
 
   var prompts = [{
