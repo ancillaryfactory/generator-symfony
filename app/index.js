@@ -367,6 +367,10 @@ AppGenerator.prototype.jshint = function jshint() {
   this.copy('jshintrc', '.jshintrc');
 };
 
+AppGenerator.prototype.commands = function commands() {
+  this.copy('update-db', 'update-db');
+};
+
 AppGenerator.prototype.editorConfig = function editorConfig() {
   this.copy('editorconfig', '.editorconfig');
 };
