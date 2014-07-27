@@ -12,13 +12,13 @@ var gzip = require('gulp-gzip');
 
 var paths = {
 	scripts: [
-		'src/Name/MainBundle/Resources/js/*.js'
+		'src/Site/MainBundle/Resources/js/*.js'
 	],
 	stylesheets: [
-		'src/Name/MainBundle/Resources/less/custom/*.less'
+		'src/Site/MainBundle/Resources/less/custom/*.less'
 	],
     css: [
-        'src/Name/MainBundle/Resources/public/css/main.css'
+        'src/Site/MainBundle/Resources/public/css/main.css'
     ]
 }
 
@@ -26,7 +26,7 @@ gulp.task('scripts', function() {
 	return gulp.src(paths.scripts)
 		.pipe(concat('scripts.js'))
 		.pipe(filesize())
-		.pipe(gulp.dest('src/Name/MainBundle/Resources/public/js'));
+		.pipe(gulp.dest('src/Site/MainBundle/Resources/public/js'));
 });
 
 gulp.task('build', function() {
@@ -35,18 +35,18 @@ gulp.task('build', function() {
 		.pipe(concat('scripts.min.js'))
 		//.pipe(gzip())
 		.pipe(filesize())
-		.pipe(gulp.dest('src/Name/MainBundle/Resources/public/js'));
+		.pipe(gulp.dest('src/Site/MainBundle/Resources/public/js'));
 });
 
 gulp.task('stylesheets', function() {
-	return gulp.src('src/Name/MainBundle/Resources/less/custom/main.less')
+	return gulp.src('src/Site/MainBundle/Resources/less/custom/main.less')
 		.pipe(less({
 			sourceMap: true,
 			compress: true
 		}))
 		.pipe(concat('main.css'))
 		.pipe(filesize())
-		.pipe(gulp.dest('src/Name/MainBundle/Resources/public/css'));
+		.pipe(gulp.dest('src/Site/MainBundle/Resources/public/css'));
 });
 
 gulp.task('css_concat', ['stylesheets'], function(){
@@ -55,16 +55,16 @@ gulp.task('css_concat', ['stylesheets'], function(){
        .pipe(minifyCSS())
        //.pipe(gzip())
        .pipe(filesize())
-       .pipe(gulp.dest('src/Name/MainBundle/Resources/public/css'));
+       .pipe(gulp.dest('src/Site/MainBundle/Resources/public/css'));
 });
 
 gulp.task('images', function() {
 	return gulp.src(paths.images)
-		.pipe(gulp.dest('src/Name/MainBundle/Resources/public/css'));
+		.pipe(gulp.dest('src/Site/MainBundle/Resources/public/css'));
 });
 
 gulp.task('lint', function() {
-  gulp.src('src/Name/MainBundle/Resources/js/*.js')
+  gulp.src('src/Site/MainBundle/Resources/js/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
