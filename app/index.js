@@ -380,6 +380,10 @@ AppGenerator.prototype.scripts = function scripts() {
   this.copy('scripts/app.js', 'web/scripts/app.js');
 };
 
+AppGenerator.prototype.copyBundle = function copyBundle() {
+  this.directory('Site','src/Site');
+}
+
 AppGenerator.prototype.gitInit = function gitInit() {
   var cb = this.async();
   spawn('git', ['init']).on('exit', function() {
