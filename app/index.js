@@ -181,6 +181,53 @@ AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
 
 }
 
+AppGenerator.prototype.database = function database(){
+  var cb = this.async();
+
+  var prompts = [
+    {
+      type: 'input',
+      name: 'db_name',
+      message: 'Database name',
+      default: 'symfony'
+    },
+    {
+      type: 'input',
+      name: 'db_host',
+      message: 'Database host',
+      default: '127.0.0.1'
+    },
+    {
+      type: 'input',
+      name: 'db_port',
+      message: 'Database port',
+      default: '8889'
+    },
+    {
+      type: 'input',
+      name: 'db_user',
+      message: 'Username',
+      default: 'root'
+    },
+    {
+      type: 'input',
+      name: 'db_password',
+      message: 'Password',
+      default: 'root'
+    }
+    ];
+
+    this.prompt(prompts, function (answers) {
+      this.db_name = answers.db_name;
+      this.db_user = answers.db_user;
+      this.db_password = answers.db_password;
+      this.db_host = answers.db_host;
+      this.db_port = answers.db_port;
+
+    cb();
+  }.bind(this));
+}
+
 
 // AppGenerator.prototype.askCssExtension = function askCssExtension() {
 //   var cb = this.async();
@@ -297,6 +344,10 @@ AppGenerator.prototype.packageJSON = function packageJSON() {
   this.template('_package.json', 'package.json');
 };
 
+AppGenerator.prototype.parametersYML = function parametersYML() {
+  this.template('symfony/_parameters.yml', 'app/config/parameters.yml');
+};
+
 AppGenerator.prototype.git = function git() {
   console.log('This will add some generated values to the gitignore file');
   var gitignorePath = ".gitignore";
@@ -372,13 +423,13 @@ AppGenerator.prototype.updateDoctrineExtensions = function updateDoctrineExtensi
   this.write(configPath, configContents);
 }
 
-AppGenerator.prototype.createBundle = function createBundle() {
-  console.log('Creating new bundle');
-  var cb = this.async();
-  spawn('php', ['app/console', 'generate:bundle']).on('exit', function() {
-    cb();
-  });
-}
+// AppGenerator.prototype.createBundle = function createBundle() {
+//   console.log('Creating new bundle');
+//   var cb = this.async();
+//   spawn('php', ['app/console', 'generate:bundle']).on('exit', function() {
+//     cb();
+//   });
+// }
 
 AppGenerator.prototype.configureVagrant = function configureVagrant() {
   if (this.vagrant) {
