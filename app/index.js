@@ -157,6 +157,31 @@ AppGenerator.prototype.askSymfonyCustom = function askSymfonyCustom() {
   }
 }
 
+AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
+  var cb = this.async();
+
+  var prompts = [{
+    type: 'list',
+    name: 'taskRunner',
+    message: 'Which task runner would you like to use?',
+    default: 'gulp',
+    choices: ['gulp', 'grunt']
+  }];
+
+  this.prompt(prompts, function (answers) {
+
+    if (answers.taskRunner) {
+      this.taskRunner = answers.taskRunner;
+    } else {
+      this.taskRunner = 'gulp';
+    }
+
+    cb();
+  }.bind(this));
+
+}
+
+
 AppGenerator.prototype.askCssExtension = function askCssExtension() {
   var cb = this.async();
 

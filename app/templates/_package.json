@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
+    <% if (taskRunner === 'grunt') { %>
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
@@ -25,7 +26,19 @@
     "grunt-svgmin": "~0.2.0",
     "grunt-concurrent": "~0.3.0",
     "load-grunt-tasks": "~0.1.0",
-    "time-grunt": "~0.1.1"
+    "time-grunt": "~0.1.1",
+    <% } %>
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-uglify": "*",
+    "gulp-less": "*",
+    "gulp-watch": "*",
+    "gulp-filesize": "0.0.6",
+    "gulp-concat-sourcemap": "^1.2.0",
+    "gulp-jshint": "*",
+    "gulp-minify-css": "^0.3.4",
+    "gulp-gzip": "0.0.8"
   },
   "engines": {
     "node": ">=0.8.0"
