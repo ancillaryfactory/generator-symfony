@@ -19,10 +19,17 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         console.log('Getting the composer dependencies');
         var composerReqs = ['evolution7/grunt-usemin-bundle="0.3.*"'];
         var composerDevReqs = ['kunstmaan/live-reload-bundle=dev-master'];
+        var parent = this;
+        
         if (this.globalComposer) {
-          var comspawn = this.spawnCommand('composer', ['update']);
+          this.spawnCommand('composer', ['update']).on('close', function(){
+            // console.log('Global close event');
+            parent.spawnCommand('app/console', ['doctrine:database:create']);
+          });
         } else {
-          var comspawn = this.spawnCommand('php', ['composer.phar', 'update']);
+          this.spawnCommand('php', ['composer.phar', 'update']).on('close', function(){
+            parent.spawnCommand('app/console', ['doctrine:database:create']);
+          });
         }
       }.bind(this)
     });
@@ -409,7 +416,10 @@ AppGenerator.prototype.updateComposerFile = function updateComposerFile() {
   var appKernelPath = "composer.json";
   var appKernelContents = this.readFileAsString(appKernelPath);
   var replaceValue = this.read("symfony/composer.json");
+  // var postUpdateScripts = this.read("symfony/composer-post-update.json");
+
   appKernelContents = appKernelContents.replace('"require": {', replaceValue);
+  // appKernelContents = appKernelContents.replace('"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"', postUpdateScripts);
   this.write(appKernelPath, appKernelContents);
 }
 
@@ -430,14 +440,6 @@ AppGenerator.prototype.updateDoctrineExtensions = function updateDoctrineExtensi
   configContents += extraContents;
   this.write(configPath, configContents);
 }
-
-// AppGenerator.prototype.createBundle = function createBundle() {
-//   console.log('Creating new bundle');
-//   var cb = this.async();
-//   spawn('php', ['app/console', 'generate:bundle']).on('exit', function() {
-//     cb();
-//   });
-// }
 
 AppGenerator.prototype.configureVagrant = function configureVagrant() {
   if (this.vagrant) {
