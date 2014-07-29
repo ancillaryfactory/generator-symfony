@@ -128,6 +128,9 @@ AppGenerator.prototype.getAppName = function getAppName() {
 
     appName = answers.appName;
 
+    // Make sure first letter is capitalized
+    appName = appName.charAt(0).toUpperCase() + appName.slice(1);
+    
     cb();
   }.bind(this));
 
