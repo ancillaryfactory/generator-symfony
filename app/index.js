@@ -5,6 +5,7 @@ var path = require('path');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var yeoman = require('yeoman-generator');
+var appName = '';
 
 var AppGenerator = module.exports = function Appgenerator(args, options, config) {
 
@@ -24,7 +25,9 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         if (this.globalComposer) {
           this.spawnCommand('composer', ['update']).on('close', function(){
             // console.log('Global close event');
-            parent.spawnCommand('app/console', ['doctrine:database:create']);
+            parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
+              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
+            });
           });
         } else {
           this.spawnCommand('php', ['composer.phar', 'update']).on('close', function(){
@@ -111,6 +114,26 @@ AppGenerator.prototype.askSymfonyStandard = function askSymfonyStandard() {
   }.bind(this));
 };
 
+AppGenerator.prototype.getAppName = function getAppName() {
+  var cb = this.async();
+
+  var prompts = [{
+    type: 'input',
+    name: 'appName',
+    message: 'Enter app name:',
+    default: 'Site'
+  }];
+
+  this.prompt(prompts, function (answers) {
+
+    appName = answers.appName;
+
+    cb();
+  }.bind(this));
+
+}
+
+
 AppGenerator.prototype.askSymfonyCustom = function askSymfonyCustom() {
   // Check if not using standard distribution
   if (this.symfonyDistribution == null) {
@@ -174,7 +197,6 @@ AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
     default: 'gulp',
     choices: ['gulp', 'grunt']
   }];
-
   this.prompt(prompts, function (answers) {
 
     if (answers.taskRunner) {
@@ -273,7 +295,7 @@ AppGenerator.prototype.askFeatures = function askFeatures() {
     choices: [{
       name: 'Vagrant (requires "precise64" box)',
       value: 'vagrant',
-      checked: true
+      checked: false
     }
     // , {
     //   name: 'inuit.css',
@@ -391,9 +413,9 @@ AppGenerator.prototype.scripts = function scripts() {
   this.copy('scripts/app.js', 'web/scripts/app.js');
 };
 
-AppGenerator.prototype.copyBundle = function copyBundle() {
-  this.directory('Site','src/Site');
-}
+// AppGenerator.prototype.copyBundle = function copyBundle() {
+//   this.directory('Site','src/Site');
+// }
 
 AppGenerator.prototype.gitInit = function gitInit() {
   var cb = this.async();
