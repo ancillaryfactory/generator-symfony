@@ -1,23 +1,21 @@
 {
   "name": "generator-symfony2",
   "version": "0.6.0",
-  "description": "Scaffold out a Symfony 2 PHP web app",
-  "author": "Evolution 7",
+  "description": "Yeoman Generator for a Symfony 2 PHP web app",
+  "author": "Evolution 7, Ancillary Factory",
   "keywords": [
     "yeoman-generator",
     "web",
     "app",
     "php",
     "symfony",
-    "modernizr",
-    "detectizr"
+    "modernizr"
   ],
-  "homepage": "https://github.com/evolution7/generator-symfony",
-  "bugs": "https://github.com/evolution7/generator-symfony/issues",
+  "homepage": "https://github.com/ancillaryfactory/generator-symfony",
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/evolution7/generator-symfony.git"
+    "url": "git@github.com:ancillaryfactory/generator-symfony.git"
   },
   "scripts": {
     "test": "mocha --reporter spec"
