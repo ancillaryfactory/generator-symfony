@@ -1,0 +1,2 @@
+now=$(date +"%m_%d_%Y")
+/Applications/MAMP/Library/bin/mysqldump -u <%= db_user %> -p <%= db_name %> > ../database/snapshot_$now.sql

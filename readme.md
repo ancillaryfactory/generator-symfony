@@ -25,7 +25,8 @@ Things you probably need:
 
 ## Getting Started
 
-- Run: `yo symfony2`
+- Clone repo and run `npm link`
+- In new folder, run `yo symfony2`
 - Run `gulp watch` for development, point your browser at app_dev.php
 - Run `gulp build` for production deployment/access via app.php
 
