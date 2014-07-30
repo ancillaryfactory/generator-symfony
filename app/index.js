@@ -5,6 +5,7 @@ var path = require('path');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var yeoman = require('yeoman-generator');
+var chalk = require('chalk');
 var appName = '';
 
 var AppGenerator = module.exports = function Appgenerator(args, options, config) {
@@ -93,7 +94,7 @@ AppGenerator.prototype.askSymfonyStandard = function askSymfonyStandard() {
   var prompts = [{
     type: 'confirm',
     name: 'symfonyStandard',
-    message: 'Would you like to use the Symfony ' + this.symfonyStandardDistribution.commit + ' "Standard Edition" distribution',
+    message: 'Would you like to use the Symfony ' + this.symfonyStandardDistribution.commit + ' "Standard Edition" distribution?',
     default: true
   }];
 
@@ -122,9 +123,8 @@ AppGenerator.prototype.getAppName = function getAppName() {
     type: 'input',
     name: 'appName',
     message: 'Enter app name:',
-    default: 'Site'
+    default: 'MyApp'
   }];
-
   this.prompt(prompts, function (answers) {
 
     appName = answers.appName;
@@ -134,7 +134,6 @@ AppGenerator.prototype.getAppName = function getAppName() {
     
     cb();
   }.bind(this));
-
 }
 
 
@@ -216,7 +215,7 @@ AppGenerator.prototype.askTaskRunner = function askTaskRunner() {
 
 AppGenerator.prototype.database = function database(){
   var cb = this.async();
-  this.log('\nDatabase setup');
+  this.log( chalk.green('\n-=| Database Setup |=-'));
   var prompts = [
     {
       type: 'input',
