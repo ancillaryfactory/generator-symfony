@@ -8,6 +8,8 @@ Yeoman generator that scaffolds out a Symfony 2 PHP web app.
 * Bootstrap 3
 * Gulp or Grunt tasks
 * LESS
+* Command aliases for schema updates and database dumps
+* Automatic database and bundle generation
 
 For more information on what `generator-symfony` can do for you, take a look at the [Grunt tasks](https://github.com/evolution7/generator-symfony/blob/master/app/templates/_package.json) used in our `package.json`.
 
