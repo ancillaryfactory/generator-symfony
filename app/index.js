@@ -24,14 +24,15 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         
         if (this.globalComposer) {
           this.spawnCommand('composer', ['update']).on('close', function(){
-            // console.log('Global close event');
             parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
               parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
             });
           });
         } else {
           this.spawnCommand('php', ['composer.phar', 'update']).on('close', function(){
-            parent.spawnCommand('app/console', ['doctrine:database:create']);
+            parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
+              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
+            });
           });
         }
       }.bind(this)
@@ -221,7 +222,7 @@ AppGenerator.prototype.database = function database(){
       type: 'input',
       name: 'db_name',
       message: 'Database name',
-      default: 'symfony'
+      default: appName.toLowerCase()
     },
     {
       type: 'input',
@@ -401,6 +402,8 @@ AppGenerator.prototype.jshint = function jshint() {
 
 AppGenerator.prototype.commands = function commands() {
   this.copy('update-db', 'update-db');
+  this.template('_dump-db', 'dump-db');
+  this.mkdir('database');
 };
 
 AppGenerator.prototype.editorConfig = function editorConfig() {
@@ -415,10 +418,6 @@ AppGenerator.prototype.scss = function scss() {
 AppGenerator.prototype.scripts = function scripts() {
   this.copy('scripts/app.js', 'web/scripts/app.js');
 };
-
-// AppGenerator.prototype.copyBundle = function copyBundle() {
-//   this.directory('Site','src/Site');
-// }
 
 AppGenerator.prototype.gitInit = function gitInit() {
   var cb = this.async();
