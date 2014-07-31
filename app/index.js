@@ -23,19 +23,22 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         var composerDevReqs = ['kunstmaan/live-reload-bundle=dev-master'];
         var parent = this;
         
-        if (this.globalComposer) {
-          this.spawnCommand('composer', ['update']).on('close', function(){
-            parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
+        var postInstallCommands = function() {
+          parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
               parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
             });
+        }
+
+        if (this.globalComposer) {
+          this.spawnCommand('composer', ['update']).on('close', function(){
+            postInstallCommands();
           });
         } else {
           this.spawnCommand('php', ['composer.phar', 'update']).on('close', function(){
-            parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
-              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
-            });
+            postInstallCommands();
           });
         }
+        
       }.bind(this)
     });
   });
