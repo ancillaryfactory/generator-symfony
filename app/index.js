@@ -25,7 +25,12 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         
         var postInstallCommands = function() {
           parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
-              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']);
+              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']).on('close', function(){
+                AppGenerator.prototype.setDefaultRoute = function setDefaultRoute() {
+                  this.template('symfony/_DefaultController.php', 'src/' + appName + '/MainBundle/Controller/DefaultController.php');
+                  this.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig');
+                };
+              });
             });
         }
 
@@ -38,7 +43,7 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
             postInstallCommands();
           });
         }
-        
+
       }.bind(this)
     });
   });
