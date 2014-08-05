@@ -24,14 +24,16 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
         var parent = this;
         
         var postInstallCommands = function() {
-          parent.spawnCommand('app/console', ['doctrine:database:create']).on('close', function(){
-              parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']).on('close', function(){
-                AppGenerator.prototype.setDefaultRoute = function setDefaultRoute() {
-                  this.template('symfony/_DefaultController.php', 'src/' + appName + '/MainBundle/Controller/DefaultController.php');
-                  this.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig');
-                };
-              });
-            });
+          parent.spawnCommand('app/console', ['doctrine:database:create']);
+              // parent.spawnCommand('app/console', ['generate:bundle', '--namespace=' + appName + '/MainBundle', '--bundle-name=' + appName + 'MainBundle', '--format=annotation']).on('close', function(){
+                // http://stackoverflow.com/questions/18841273/how-to-run-a-grunt-task-after-my-yeoman-generator-finishes-installing
+                // var context = {
+                //   app_name: appName
+                // }
+                // parent.template('symfony/_DefaultController.php', 'src/' + appName + '/MainBundle/Controller/DefaultController.php', context);
+                // parent.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig', context);
+            //   });
+            // });
         }
 
         if (this.globalComposer) {
@@ -417,6 +419,19 @@ AppGenerator.prototype.editorConfig = function editorConfig() {
   this.copy('editorconfig', '.editorconfig');
 };
 
+AppGenerator.prototype.defaultRoute = function defaultRoute() {
+  var context = {
+    appName: appName
+  }
+
+  this.log('Generating MainBundle...');
+  this.directory('symfony/default', 'src/' + appName);
+  this.template('symfony/_DefaultMainBundle.php', 'src/' + appName + '/MainBundle/' + appName + 'MainBundle.php', context);
+  this.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig', context);
+  this.template('symfony/_DefaultController.php', 'src/' + appName + '/MainBundle/Controller/DefaultController.php', context);
+  this.template('symfony/routing.yml', 'app/config/routing.yml', context);
+};
+
 AppGenerator.prototype.scss = function scss() {
   this.copy('scss/screen.scss', 'web/scss/screen.scss');
   this.copy('scss/print.scss', 'web/scss/print.scss');
@@ -438,6 +453,10 @@ AppGenerator.prototype.updateAppKernel = function updateAppKernel() {
   var appKernelPath = "app/AppKernel.php";
   var appKernelContents = this.readFileAsString(appKernelPath);
   var replaceValue = this.read("symfony/AppKernel.php");
+  
+  // Register the generated MainBundle
+  replaceValue = replaceValue.replace(/__bundle__/g, appName);
+  
   appKernelContents = appKernelContents.replace("return $bundles;", replaceValue);
   this.write(appKernelPath, appKernelContents);
 }
