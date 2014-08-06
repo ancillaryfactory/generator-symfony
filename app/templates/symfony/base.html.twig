@@ -20,8 +20,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <script src="/bower_components/modernizr/modernizr.js"></script>
-        <script src="/bower_components/detectizr/detectizr.js"></script>
+        <script src="{{ asset('bower_components/modernizr/modernizr.js') }}"></script>
+        <script src="{{ asset('bower_components/detectizr/detectizr.js') }}"></script>
         <script>
           Modernizr.Detectizr.detect({detectScreen:false});
         </script>
@@ -64,9 +64,9 @@
         
         <!-- build:js /dist/scripts/app.js -->
         <!-- bower:js -->
-        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }} "></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="scripts/app.js"></script>
+        <script src="{{ asset('scripts/app.js') }}"></script>
         <!-- endbower -->
         <!-- endbuild -->
         {% block footer %}{% endblock %}
