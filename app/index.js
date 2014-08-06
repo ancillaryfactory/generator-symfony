@@ -424,7 +424,7 @@ AppGenerator.prototype.defaultRoute = function defaultRoute() {
     appName: appName
   }
 
-  this.log('Generating MainBundle...');
+  this.log( chalk.green('Generating ' + appName + '/MainBundle...') );
   this.directory('symfony/default', 'src/' + appName);
   this.template('symfony/_DefaultMainBundle.php', 'src/' + appName + '/MainBundle/' + appName + 'MainBundle.php', context);
   this.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig', context);
