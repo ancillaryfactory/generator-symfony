@@ -378,7 +378,10 @@ if ( this.taskRunner === 'grunt') {
   };
 } else {
   AppGenerator.prototype.gulpfile = function gulpfile() {
-    this.template('_gulpfile.js', 'gulpfile.js');
+    var context = {
+      appName: appName
+    }
+    this.template('_gulpfile.js', 'gulpfile.js', context);
   };
 }
 
@@ -411,6 +414,7 @@ AppGenerator.prototype.jshint = function jshint() {
 
 AppGenerator.prototype.commands = function commands() {
   this.copy('update-db', 'update-db');
+  this.copy('cache-clear', 'cache-clear');
   this.template('_dump-db', 'dump-db');
   this.mkdir('database');
 };
@@ -430,6 +434,14 @@ AppGenerator.prototype.defaultRoute = function defaultRoute() {
   this.template('symfony/_rocket.html.twig', 'src/' + appName + '/MainBundle/Resources/views/Default/rocket.html.twig', context);
   this.template('symfony/_DefaultController.php', 'src/' + appName + '/MainBundle/Controller/DefaultController.php', context);
   this.template('symfony/routing.yml', 'app/config/routing.yml', context);
+
+  var bundleResourcesDirectory = 'src/' + appName + '/MainBundle/Resources';
+  this.mkdir(bundleResourcesDirectory);
+  this.mkdir(bundleResourcesDirectory + '/js');
+  this.mkdir(bundleResourcesDirectory + '/less');
+  this.mkdir(bundleResourcesDirectory + '/public/css');
+  this.mkdir(bundleResourcesDirectory + '/public/js');
+  this.mkdir(bundleResourcesDirectory + '/public/images');
 };
 
 AppGenerator.prototype.scss = function scss() {
@@ -438,7 +450,7 @@ AppGenerator.prototype.scss = function scss() {
 };
 
 AppGenerator.prototype.scripts = function scripts() {
-  this.copy('scripts/app.js', 'web/scripts/app.js');
+  this.copy('scripts/app.js', 'src/' + appName + '/MainBundle/Resources/app.js');
 };
 
 AppGenerator.prototype.gitInit = function gitInit() {

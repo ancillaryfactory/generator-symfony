@@ -36,8 +36,7 @@
     "gulp-filesize": "0.0.6",
     "gulp-concat-sourcemap": "^1.2.0",
     "gulp-jshint": "*",
-    "gulp-minify-css": "^0.3.4",
-    "gulp-gzip": "0.0.8"
+    "gulp-minify-css": "^0.3.4"
     <% } %>
   },
   "engines": {
