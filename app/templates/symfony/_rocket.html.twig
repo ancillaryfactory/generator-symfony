@@ -4,6 +4,10 @@
 
 {% block head %}
 <style type="text/css">
+  body {
+    background: #7fd9f9;
+  }
+
   /* http://www.cssreset.com/css3-webkit-animation-shake-links */
   @-webkit-keyframes spaceboots {
   0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
@@ -84,12 +88,10 @@
 {% block footer %}
   <script>
     $(document).ready(function() {
-      $('body').css('background', '#7fd9f9');
       $('#rocket').animate({
         'top': '80px',
         },
         800, function() {
-        /* stuff to do after animation is complete */
       });
     });
   </script>
