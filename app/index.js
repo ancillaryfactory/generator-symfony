@@ -495,11 +495,16 @@ AppGenerator.prototype.updateConfigDev = function updateConfigDev() {
 }
 
 AppGenerator.prototype.updateDoctrineExtensions = function updateDoctrineExtensions() {
-  console.log('Adding support for Doctrine Extensions');
+  console.log('This will add support for Doctrine extensions');
   var configPath = "app/config/config.yml";
   var configContents = this.readFileAsString(configPath);
   var extraContents = this.read("symfony/config.yml");
   configContents += extraContents;
+  
+  // Set session handler to avoid an error:
+  // See http://www.reecefowell.com/2014/01/22/symfony2-and-contexterrorexception-warning-sessionhandlerread-exception/
+  configContents = configContents.replace('handler_id:  ~', 'handler_id:  session.handler.native_file');
+
   this.write(configPath, configContents);
 }
 
